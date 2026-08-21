@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is **not a normal codebase** — it is a phased TypeScript learning journey for an early-career developer coming from JavaScript, which gradually grows into a reusable starter template. The authoritative document is **ROADMAP.md**: nine milestone-gated phases (0–8) going from environment setup → TS fundamentals → build tooling → TDD with Vitest → starter template → React → Fastify/Express + Postgres → Docker → GCP Cloud Run deployment tested with Bruno and Playwright.
 
+From Phase 1 onward every phase builds a piece of **one product — an expense splitter** (Splitwise-style: shared expenses, uneven splits, penny-exact rounding, who-pays-whom settlement) — so domain code written early survives into the deployed system. Phase 3 alone warms up on a throwaway kata before TDD-ing the real rules. The schedule is deliberately aggressive (**6 weeks at ~12–15 hrs/week**) on the assumption the learner uses Claude as a tutor to unblock fast — not as a code generator.
+
 There are currently no build, test, or lint commands — no code exists yet. As phases introduce tooling (npm scripts in Phase 2, Vitest in Phase 3, docker compose in Phase 6/7), **update this file with the actual commands**.
 
 ## How to operate here

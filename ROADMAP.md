@@ -2,6 +2,8 @@
 
 A phased path from "I know JavaScript" to "I can build, test, containerise, and deploy a real TypeScript system." Written for an early-career developer with a JS background (variables, conditionals, loops, functions), and designed to double as an onboarding guide for other junior devs later.
 
+**The problem you'll solve: an expense splitter.** From Phase 1 onward, every phase builds a piece of the same product — a Splitwise-style app where a group records shared expenses and the app works out who owes whom. It's small enough to hold in your head but has real business rules: money handling, uneven splits, rounding pennies fairly, settling balances. That means the types you write in Phase 1, the logic you TDD in Phase 3, the UI from Phase 5 and the API from Phase 6 all survive into the system you deploy in Phase 8 — nothing you build is throwaway. The one deliberate exception: Phase 3 warms up on a small kata first, because when you're learning red–green–refactor you want a problem whose answer you already know, so all your attention goes on the cycle.
+
 **Guiding principle: just-in-time learning.** No tool, library, or concept is introduced before the phase that needs it. Nothing is scaffolded up front. Each phase is gated by the previous phase's milestone — you move on when you can *demonstrate* the milestone, not when you've read about the topic.
 
 **How to use this doc**
@@ -10,21 +12,22 @@ A phased path from "I know JavaScript" to "I can build, test, containerise, and 
 - Every phase ends with a **Milestone** phrased as something observable — a passing test run, a working demo, a URL. That's your evidence of progress (useful for a mentor or manager).
 - When you hit a milestone, tag it in git (`git tag phase-1-done`) and write a short "what I learned" note (3–5 bullets) in a `notes/` folder. The tags + notes are your progress trail.
 - Keep everything in **one growing repo** (this one). Each phase builds on the last, which mirrors how real projects evolve — and one repo with milestone tags demonstrates progress far better than scattered experiments.
-- Effort estimates assume a few focused hours per week and are deliberately elastic. Slower is fine; skipping milestones is not.
+- Effort estimates assume an apprentice pace with Claude as an accelerator: **~12–15 focused hours per week**, whole roadmap targeted at **6 weeks**. Week numbers are the schedule; milestones are the gate. If a milestone isn't demonstrable, take the extra days — skipping milestones is not.
+- **Use Claude hard — as a tutor, not a typist.** Ask it to explain concepts, review your code, set you practice exercises, and unblock you fast when you're stuck (stuck-time is where most learning schedules die, and removing it is why this one is aggressive). But write the code yourself: code Claude writes for you is learning you didn't do, and the milestones test *you*, not it.
 
 ## Progress tracker
 
-| Phase | Topic | Status | Milestone (proof) |
-|---|---|---|---|
-| 0 | Environment & workflow | ⬜ Not started | Hello-world TS repo, reproducible from your notes |
-| 1 | TypeScript fundamentals (JS → TS) | ⬜ Not started | Typed utility library compiling under `strict: true` |
-| 2 | Build system & tooling | ⬜ Not started | One command builds, lints, and runs the project |
-| 3 | Testing & TDD (red-green-refactor) | ⬜ Not started | Kata solved strictly RGR, visible in commit history |
-| 4 | The starter template | ⬜ Not started | Fresh clone → green tests in under 15 min via README |
-| 5 | React with TypeScript | ⬜ Not started | Typed React app with passing component tests |
-| 6 | Backend, Postgres & first Docker | ⬜ Not started | API persisting to Postgres-in-Docker, integration tests green |
-| 7 | Docker for the dev | ⬜ Not started | `docker compose up` runs the whole stack from clean checkout |
-| 8 | Deploy & test on GCP Cloud Run | ⬜ Not started | Public URL + green Bruno collection + green Playwright smoke test |
+| Phase | Topic | Target week | Status | Milestone (proof) |
+|---|---|---|---|---|
+| 0 | Environment & workflow | Week 1, day 1 | ⬜ Not started | Hello-world TS repo, reproducible from your notes |
+| 1 | TypeScript fundamentals (JS → TS) | Week 1 | ⬜ Not started | Typed expense-splitter domain library under `strict: true` |
+| 2 | Build system & tooling | Week 2 (first half) | ⬜ Not started | One command builds, lints, and runs the project |
+| 3 | Testing & TDD (red-green-refactor) | Weeks 2–3 | ⬜ Not started | Split/settlement rules built strictly RGR, visible in commit history |
+| 4 | The starter template | Week 3 | ⬜ Not started | Fresh clone → green tests in under 15 min via README |
+| 5 | React with TypeScript | Weeks 3–4 | ⬜ Not started | Expense-splitter UI with passing component tests |
+| 6 | Backend, Postgres & first Docker | Weeks 4–5 | ⬜ Not started | API persisting to Postgres-in-Docker, integration tests green |
+| 7 | Docker for the dev | Week 5 | ⬜ Not started | `docker compose up` runs the whole stack from clean checkout |
+| 8 | Deploy & test on GCP Cloud Run | Week 6 | ⬜ Not started | Public URL + green Bruno collection + green Playwright smoke test |
 
 Statuses: ⬜ Not started · 🟨 In progress · ✅ Done (update the table as you go)
 
@@ -34,7 +37,7 @@ Statuses: ⬜ Not started · 🟨 In progress · ✅ Done (update the table as y
 
 **Goal:** a working, repeatable local dev setup — the boring stuff that blocks everyone's first day.
 
-**Effort:** ~1 session.
+**Effort:** ~half a day (mostly revision if you've been through a code academy) — Week 1, day 1.
 
 **What you'll learn**
 
@@ -54,7 +57,7 @@ Statuses: ⬜ Not started · 🟨 In progress · ✅ Done (update the table as y
 
 **Goal:** translate the JavaScript you already know into typed TypeScript, and understand what the compiler buys you.
 
-**Effort:** ~2–3 weeks. This is the foundation — don't rush it.
+**Effort:** ~12–15 hrs — Week 1. This is the foundation: the one phase not to shortcut if generics or narrowing still feel shaky at the end.
 
 **What you'll learn**
 
@@ -71,9 +74,9 @@ Statuses: ⬜ Not started · 🟨 In progress · ✅ Done (update the table as y
 - [ ] The core mental model: **types exist at compile time only** — compile errors vs runtime errors
 - [ ] `any` vs `unknown`, and why `any` is a last resort
 
-**Practice / deliverable:** a small typed utility library in `src/` — e.g. array helpers (`chunk`, `unique`), string helpers, a tiny `Result`-style success/failure type. Break things on purpose and read the compiler errors until they make sense.
+**Practice / deliverable:** the expense splitter's domain library in `src/domain/` — `Money` as integer pence (never floats: try `0.1 + 0.2` in a JS console and see why), `Person`, `Expense` with its split, and a `Result`-style success/failure type for validating input (e.g. rejecting a negative amount). Plus simple pure functions over them: `addMoney`, `validateExpense`. Break things on purpose and read the compiler errors until they make sense.
 
-**Milestone — you can demonstrate:** your utility library compiles cleanly under `strict: true`, and you can walk someone through two or three real mistakes the compiler caught for you that plain JS would have let through to runtime.
+**Milestone — you can demonstrate:** your domain library compiles cleanly under `strict: true`, and you can walk someone through two or three real mistakes the compiler caught for you (mixing pence with pounds, a forgotten `undefined` check) that plain JS would have let through to runtime.
 
 ---
 
@@ -81,7 +84,7 @@ Statuses: ⬜ Not started · 🟨 In progress · ✅ Done (update the table as y
 
 **Goal:** demystify what happens between the `.ts` you write and the code that runs.
 
-**Effort:** ~1–2 weeks.
+**Effort:** ~5–6 hrs — Week 2, first half. Mostly revision for a code-academy grad; ESM vs CommonJS is the genuinely new part.
 
 **What you'll learn**
 
@@ -103,7 +106,7 @@ Statuses: ⬜ Not started · 🟨 In progress · ✅ Done (update the table as y
 
 **Goal:** make tests your default way of writing code, not an afterthought.
 
-**Effort:** ~2–3 weeks of deliberate practice.
+**Effort:** ~10–12 hrs of **daily deliberate practice** — Weeks 2–3. This phase compresses least, Claude or no Claude: RGR is habit formation, not information, so short daily sessions beat one long one.
 
 **What you'll learn**
 
@@ -113,11 +116,11 @@ Statuses: ⬜ Not started · 🟨 In progress · ✅ Done (update the table as y
 - [ ] Arrange–Act–Assert structure; one behaviour per test; naming tests by behaviour
 - [ ] Testing edge cases: empty inputs, boundaries, error paths
 - [ ] Test doubles (mocks/stubs) — awareness only; you'll use them properly in Phase 6
-- [ ] Retrofitting: add tests to your Phase 1 utility library, then refactor it with confidence
+- [ ] Retrofitting: add tests to your Phase 1 domain library, then refactor it with confidence
 
-**Practice / deliverable:** classic katas, strictly test-first — FizzBuzz to warm up, then the String Calculator kata, then something meatier (e.g. a Roman numeral converter or a tiny expression parser). Commit at every red and every green so the cycle is visible in history.
+**Practice / deliverable:** warm up with **one kata session** (FizzBuzz or the String Calculator), strictly test-first — a throwaway problem you already know the answer to, so all your attention goes on the cycle. Then TDD the expense splitter's real rules: splitting an expense unevenly, rounding so the pennies still add up to the total (£10 three ways is the classic), computing each person's balance, and working out who pays whom to settle. Commit at every red and every green so the cycle is visible in history.
 
-**Milestone — you can demonstrate:** a kata solved with a commit history that reads red → green → refactor → red → green…, and the whole suite green in one `npm test` run. Bonus proof: refactor something aggressively and show the tests catching a mistake.
+**Milestone — you can demonstrate:** the split and settlement rules built with a commit history that reads red → green → refactor → red → green…, the whole suite green in one `npm test` run, and the rounding edge case covered by a test. Bonus proof: refactor something aggressively and show the tests catching a mistake.
 
 ---
 
@@ -125,7 +128,7 @@ Statuses: ⬜ Not started · 🟨 In progress · ✅ Done (update the table as y
 
 **Goal:** turn Phases 0–3 into the reusable `ts-starter` template — the original purpose of this repo, earned rather than copied.
 
-**Effort:** ~1 week.
+**Effort:** ~4–5 hrs — Week 3.
 
 **What you'll learn**
 
@@ -134,7 +137,7 @@ Statuses: ⬜ Not started · 🟨 In progress · ✅ Done (update the table as y
 - [ ] `.gitignore`, `.nvmrc`, editor config — the small files that make onboarding smooth
 - [ ] (Optional) a pre-commit hook running lint + tests
 
-**Practice / deliverable:** the polished template: `src/`, `tests/` (or co-located tests), tsconfig, ESLint/Prettier config, Vitest config, npm scripts, README, plus one example module with tests showing the TDD style you expect.
+**Practice / deliverable:** the polished template: `src/`, `tests/` (or co-located tests), tsconfig, ESLint/Prettier config, Vitest config, npm scripts, README. Your Phase 1–3 domain module with its tests doubles as the example showing the TDD style you expect — and is a live case study of "what belongs in a template vs what's project-specific" (config: template; expense-splitting rules: project).
 
 **Milestone — you can demonstrate:** someone else (or you, in a fresh directory) clones the repo and gets from zero to green tests in **under 15 minutes** using only the README. If they get stuck, the README — not the person — gets fixed.
 
@@ -144,7 +147,7 @@ Statuses: ⬜ Not started · 🟨 In progress · ✅ Done (update the table as y
 
 **Goal:** apply your TS foundation to building user interfaces.
 
-**Effort:** ~3–4 weeks.
+**Effort:** ~15–18 hrs — Weeks 3–4. With prior React exposure from a code academy this goes faster; the genuinely new material is typing components and testing with React Testing Library.
 
 **What you'll learn**
 
@@ -157,9 +160,9 @@ Statuses: ⬜ Not started · 🟨 In progress · ✅ Done (update the table as y
 - [ ] Component testing with Vitest + React Testing Library — test what the user sees, TDD where it fits
 - [ ] Fetching data from an API and typing the response (this sets up Phase 6)
 
-**Practice / deliverable:** a small but real app — e.g. a task tracker or habit tracker — with typed components and a test suite. Keep state in memory for now; persistence is deliberately deferred to Phase 6.
+**Practice / deliverable:** the expense splitter's UI: add people to a group, record an expense with its split, and watch everyone's balance and the "who pays whom" settlement update — all powered by the domain library you TDD'd in Phase 3, imported straight into the frontend. Keep state in memory for now; persistence is deliberately deferred to Phase 6.
 
-**Milestone — you can demonstrate:** the app running locally (`npm run dev`), doing something genuinely interactive, with component tests passing — and you can explain how TypeScript caught prop/state mistakes while you built it.
+**Milestone — you can demonstrate:** the app running locally (`npm run dev`), splitting real expenses interactively, with component tests passing — and you can explain how TypeScript caught prop/state mistakes while you built it.
 
 ---
 
@@ -167,7 +170,7 @@ Statuses: ⬜ Not started · 🟨 In progress · ✅ Done (update the table as y
 
 **Goal:** give your app a real backend with real persistence — and meet Docker at exactly the moment it becomes useful.
 
-**Effort:** ~4–5 weeks. The biggest phase; split it into API-first, then DB.
+**Effort:** ~15–20 hrs — Weeks 4–5. The biggest phase; split it into API-first, then DB.
 
 > **When to introduce Docker — answered.** You asked at what stage Docker should enter the learning path. The answer this roadmap takes: **here, as a consumer first.** You need a Postgres database; installing one natively is fiddly and pollutes your machine; `docker compose up` gives you a disposable, identical database in one command. That's the dev-POV value of Docker in a nutshell — experience it as a user before authoring images yourself (that's Phase 7). No Docker earlier than this, because nothing earlier needed it.
 
@@ -182,7 +185,7 @@ Statuses: ⬜ Not started · 🟨 In progress · ✅ Done (update the table as y
 - [ ] Integration tests with Vitest that hit the real containerised database — and why they're different from unit tests
 - [ ] Connect the Phase 5 React app to this API
 
-**Practice / deliverable:** a CRUD API behind your Phase 5 app (tasks/habits persisted to Postgres), with Postgres supplied by a `docker-compose.yml` you copy-and-understand, and an integration test suite.
+**Practice / deliverable:** the expense splitter's API behind your Phase 5 app (people, expenses and splits persisted to Postgres; balances computed by your Phase 3 domain logic), with Postgres supplied by a `docker-compose.yml` you copy-and-understand, and an integration test suite.
 
 **Milestone — you can demonstrate:** stop the API, restart it, and the data is still there (it lives in Postgres, running in Docker); the integration tests pass against the containerised DB; the React app reads and writes through the API end-to-end on your machine.
 
@@ -192,7 +195,7 @@ Statuses: ⬜ Not started · 🟨 In progress · ✅ Done (update the table as y
 
 **Goal:** move from consuming containers to authoring them — dev-level competence, deliberately not expertise.
 
-**Effort:** ~1–2 weeks.
+**Effort:** ~5–6 hrs — Week 5 (you've already been consuming Docker since Phase 6).
 
 **What you'll learn**
 
@@ -215,7 +218,7 @@ Statuses: ⬜ Not started · 🟨 In progress · ✅ Done (update the table as y
 
 **Goal:** ship it — your container running on real cloud infrastructure, verified by real tests.
 
-**Effort:** ~2–3 weeks.
+**Effort:** ~8–10 hrs — Week 6. First-time GCP friction (billing, IAM, Cloud SQL connectivity) is the schedule risk here; the GitHub Actions item is stretch/overflow, not part of the 6 weeks.
 
 **What you'll learn**
 
@@ -226,7 +229,7 @@ Statuses: ⬜ Not started · 🟨 In progress · ✅ Done (update the table as y
 - [ ] A database for the deployed app: Cloud SQL for Postgres (managed) — and why you don't run your DB *in* Cloud Run
 - [ ] Watching logs and debugging a deployed service (Cloud Logging)
 - [ ] **Bruno**: build a collection covering your API's endpoints, with environments for local vs deployed
-- [ ] **Playwright**: a smoke E2E test that drives the deployed app like a user (load page → create a thing → see it persist)
+- [ ] **Playwright**: a smoke E2E test that drives the deployed app like a user (load page → add an expense → see balances update and persist)
 - [ ] Cost awareness: free tiers, and tearing down what you're not using
 - [ ] (Stretch) automate it: a GitHub Actions workflow that builds, tests, and deploys on push
 
